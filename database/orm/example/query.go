@@ -2,7 +2,7 @@ package example
 
 import (
 	"fmt"
-	"github.com/bensema/library/orm"
+	"github.com/bensema/library/database/orm"
 )
 
 func query() (err error) {
