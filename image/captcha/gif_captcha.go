@@ -16,10 +16,19 @@ import (
 	"time"
 )
 
-type Config struct {
+// GifCaptcha gif 验证码
+type GifCaptcha struct {
+	frontColors  []color.Color    //图片前景
+	bkgColors    []color.Color    //图片背景
+	disturbLevel DisturbLevel     //干扰级别
+	fonts        []*truetype.Font //字体
+	size         image.Point      //图片大小
+	frame        int              //帧数
+	delay        int              //连续的延迟时间，每帧一次，每秒钟的100分之一
 }
 
-func New(c *Config) (gc *GifCaptcha) {
+func NewGifCaptcha(c *Config) (gc *GifCaptcha) {
+
 	gc = &GifCaptcha{
 		disturbLevel: MEDIUM,
 		size:         image.Point{X: 128, Y: 48},
@@ -34,36 +43,6 @@ func New(c *Config) (gc *GifCaptcha) {
 
 	return
 }
-
-// GifCaptcha gif 验证码
-type GifCaptcha struct {
-	frontColors  []color.Color    //图片前景
-	bkgColors    []color.Color    //图片背景
-	disturbLevel DisturbLevel     //干扰级别
-	fonts        []*truetype.Font //字体
-	size         image.Point      //图片大小
-	frame        int              //帧数
-	delay        int              //连续的延迟时间，每帧一次，每秒钟的100分之一
-}
-
-// 验证码字符类型
-type StrType int
-
-const (
-	NUM   StrType = iota // 数字
-	LOWER                // 小写字母
-	UPPER                // 大写字母
-	ALL                  // 全部
-)
-
-// DisturbLevel 干扰级别
-type DisturbLevel int
-
-const (
-	NORMAL DisturbLevel = 4
-	MEDIUM DisturbLevel = 8
-	HIGH   DisturbLevel = 16
-)
 
 // AddFont 添加一个字体
 func (c *GifCaptcha) AddFont(path string) error {
@@ -277,20 +256,6 @@ func (c *GifCaptcha) drawString(str string, dot, line [][]int, frontColor color.
 }
 
 // Create 生成一个验证码图片
-func (c *GifCaptcha) GenCaptcha(size int, t StrType) (gifData *gif.GIF, str string) {
-	str = string(c.randStr(size, int(t)))
-	gifData = c.createGif(str)
-	return
-}
-
-// Create 生成一个验证码图片
-func (c *GifCaptcha) RangCaptcha() (gifData *gif.GIF, str string) {
-	str = string(c.randStr(4, int(ALL)))
-	gifData = c.createGif(str)
-	return
-}
-
-// Create 生成一个验证码图片
 func (c *GifCaptcha) RangCaptchaType(strType StrType) (gifData *gif.GIF, str string) {
 	str = string(c.randStr(4, int(strType)))
 	gifData = c.createGif(str)
@@ -338,8 +303,6 @@ func (c *GifCaptcha) createGif(str string) *gif.GIF {
 	}
 	return &anim
 }
-
-var fontKinds = [][]int{{10, 48}, {26, 97}, {26, 65}}
 
 // 生成随机字符串
 // size 个数 kind 模式
