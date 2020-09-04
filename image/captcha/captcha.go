@@ -26,14 +26,14 @@ type Config struct {
 }
 
 type Captcha struct {
-	imgCaptcha *imgCaptcha
-	gifCaptcha *GifCaptcha
+	ImgCaptcha *imgCaptcha
+	GifCaptcha *GifCaptcha
 }
 
 func New(c *Config) (cap *Captcha) {
 	cap = &Captcha{
-		gifCaptcha: NewGifCaptcha(c),
-		imgCaptcha: NewImgCaptcha(c),
+		GifCaptcha: NewGifCaptcha(c),
+		ImgCaptcha: NewImgCaptcha(c),
 	}
 
 	return
