@@ -35,7 +35,7 @@ func NewGifCaptcha(c *Config) (gc *GifCaptcha) {
 		delay:        40,
 		frame:        30,
 	}
-	gc.frontColors = []color.Color{color.Black}
+	gc.frontColors = []color.Color{color.Black, color.RGBA{R: 255, A: 255}, color.RGBA{B: 255, A: 255}, color.RGBA{G: 153, A: 255}}
 	gc.bkgColors = []color.Color{color.White}
 
 	fontData, _ := fonts.Asset("comic.ttf")

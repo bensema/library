@@ -1,6 +1,7 @@
 package captcha
 
 import (
+	"github.com/bensema/library/image/captcha/fonts"
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
 
@@ -26,8 +27,12 @@ func NewImgCaptcha(c *Config) *imgCaptcha {
 		disturlvl: NORMAL,
 		size:      image.Point{X: 82, Y: 32},
 	}
-	ic.frontColors = []color.Color{color.Black}
+	ic.frontColors = []color.Color{color.Black, color.RGBA{R: 255, A: 255}, color.RGBA{B: 255, A: 255}, color.RGBA{G: 153, A: 255}}
 	ic.bkgColors = []color.Color{color.White}
+
+	fontData, _ := fonts.Asset("comic.ttf")
+	ic.AddFontFromBytes(fontData)
+
 	return ic
 }
 
