@@ -15,17 +15,17 @@ import (
 )
 
 type imgCaptcha struct {
-	frontColors []color.Color
-	bkgColors   []color.Color
-	disturlvl   DisturbLevel
-	fonts       []*truetype.Font
-	size        image.Point
+	frontColors  []color.Color
+	bkgColors    []color.Color
+	disturbLevel DisturbLevel
+	fonts        []*truetype.Font
+	size         image.Point
 }
 
 func NewImgCaptcha(c *Config) *imgCaptcha {
 	ic := &imgCaptcha{
-		disturlvl: NORMAL,
-		size:      image.Point{X: 82, Y: 32},
+		disturbLevel: MEDIUM,
+		size:         image.Point{X: 128, Y: 48},
 	}
 	ic.frontColors = []color.Color{color.Black, color.RGBA{R: 255, A: 255}, color.RGBA{B: 255, A: 255}, color.RGBA{G: 153, A: 255}}
 	ic.bkgColors = []color.Color{color.White}
@@ -78,7 +78,7 @@ func (c *imgCaptcha) SetFont(paths ...string) error {
 
 func (c *imgCaptcha) SetDisturbance(d DisturbLevel) {
 	if d > 0 {
-		c.disturlvl = d
+		c.disturbLevel = d
 	}
 }
 
@@ -129,7 +129,7 @@ func (c *imgCaptcha) drawNoises(img *Image) {
 
 	// 待绘制图片的尺寸
 	size := img.Bounds().Size()
-	dlen := int(c.disturlvl)
+	dlen := int(c.disturbLevel)
 	// 绘制干扰斑点
 	for i := 0; i < dlen; i++ {
 		x := ra.Intn(size.X)
