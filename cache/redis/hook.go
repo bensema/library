@@ -46,6 +46,7 @@ func (hs hooks) afterProcess(ctx context.Context, cmd Cmder) error {
 type OpenTelemetryHook struct{}
 
 func (OpenTelemetryHook) BeforeProcess(ctx context.Context, cmd Cmder) (context.Context, error) {
+	fmt.Println("IsRecording:", trace.SpanFromContext(ctx).IsRecording())
 	if !trace.SpanFromContext(ctx).IsRecording() {
 		return ctx, nil
 	}
@@ -61,6 +62,7 @@ func (OpenTelemetryHook) BeforeProcess(ctx context.Context, cmd Cmder) (context.
 }
 
 func (OpenTelemetryHook) AfterProcess(ctx context.Context, cmd Cmder) error {
+	fmt.Println("AfterProcess")
 	span := trace.SpanFromContext(ctx)
 	if err := cmd.Err(); err != nil {
 		recordError(ctx, span, err)
