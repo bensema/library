@@ -19,10 +19,3 @@ type Config struct {
 	ReadTimeout  time.Duration
 	WriteTimeout time.Duration
 }
-
-func e() {
-	p := NewPool(&Config{})
-	conn := p.rp.Get()
-	defer conn.Close()
-	conn.Send()
-}
