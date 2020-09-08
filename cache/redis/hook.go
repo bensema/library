@@ -47,9 +47,9 @@ type OpenTelemetryHook struct{}
 
 func (OpenTelemetryHook) BeforeProcess(ctx context.Context, cmd Cmder) (context.Context, error) {
 	fmt.Println("IsRecording:", trace.SpanFromContext(ctx).IsRecording())
-	if !trace.SpanFromContext(ctx).IsRecording() {
-		return ctx, nil
-	}
+	//if !trace.SpanFromContext(ctx).IsRecording() {
+	//	return ctx, nil
+	//}
 
 	tracer := global.Tracer("github.com/bensema/library/redis")
 	ctx, span := tracer.Start(ctx, cmd.Name())
