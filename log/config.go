@@ -98,10 +98,16 @@ func newCore(c *Config, l zapcore.Level) zapcore.Core {
 		wss = append(wss, zapcore.AddSync(os.Stdout))
 	}
 
+	var lef zap.LevelEnablerFunc
+	if c.LevelSeparate {
+		lef = specifyLevel(l)
+	} else {
+		lef = level(l)
+	}
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderConfig), // 编码器配置
 		zapcore.NewMultiWriteSyncer(wss...),   // 打印到控制台和文件
-		l,                                     // 日志级别
+		lef,                                   // 日志级别
 	)
 	return core
 }
