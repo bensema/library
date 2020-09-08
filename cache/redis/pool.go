@@ -16,14 +16,14 @@ func NewPool(c *Config) *Pool {
 	_p.rp = &redis.Pool{
 		MaxIdle:     c.MaxIdle,
 		MaxActive:   c.MaxActive,
-		IdleTimeout: c.IdleTimeout * time.Second,
+		IdleTimeout: time.Duration(c.IdleTimeout),
 		Dial: func() (redis.Conn, error) {
 			conn, err := redis.Dial("tcp", c.Addr,
 				redis.DialPassword(c.Password),
 				redis.DialDatabase(c.Db),
-				redis.DialConnectTimeout(c.DialTimeout*time.Second),
-				redis.DialReadTimeout(c.ReadTimeout*time.Second),
-				redis.DialWriteTimeout(c.WriteTimeout*time.Second))
+				redis.DialConnectTimeout(time.Duration(c.DialTimeout)),
+				redis.DialReadTimeout(time.Duration(c.ReadTimeout)),
+				redis.DialWriteTimeout(time.Duration(c.WriteTimeout)))
 			if err != nil {
 				return nil, err
 			}

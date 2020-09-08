@@ -1,7 +1,7 @@
 package redis
 
 import (
-	"time"
+	xtime "github.com/bensema/library/time"
 )
 
 type Config struct {
@@ -9,13 +9,13 @@ type Config struct {
 
 	MaxIdle         int
 	MaxActive       int
-	IdleTimeout     time.Duration
-	MaxConnLifetime time.Duration
+	IdleTimeout     xtime.Duration
+	MaxConnLifetime xtime.Duration
 
 	Addr         string
 	Db           int
 	Password     string
-	DialTimeout  time.Duration
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
+	DialTimeout  xtime.Duration
+	ReadTimeout  xtime.Duration
+	WriteTimeout xtime.Duration
 }
