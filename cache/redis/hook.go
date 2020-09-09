@@ -47,7 +47,6 @@ type OpenTelemetryHook struct{}
 
 func (OpenTelemetryHook) BeforeProcess(ctx context.Context, cmd Cmder) (context.Context, error) {
 	if !trace.SpanFromContext(ctx).IsRecording() {
-		fmt.Println("IsRecording:", trace.SpanFromContext(ctx).IsRecording())
 		return ctx, nil
 	}
 
