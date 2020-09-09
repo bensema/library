@@ -71,7 +71,7 @@ func (OpenTelemetryHook) AfterProcess(ctx context.Context, cmd Cmder) error {
 
 func recordError(ctx context.Context, span trace.Span, err error) {
 	span.RecordError(ctx, err)
-	//if err != redis.Nil {
-	//	span.RecordError(ctx, err)
-	//}
+	if err != ErrNil {
+		span.RecordError(ctx, err)
+	}
 }
