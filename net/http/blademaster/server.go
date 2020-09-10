@@ -16,7 +16,7 @@ func Default() *gin.Engine {
 }
 
 func DefaultServer(conf *ServerConfig) *gin.Engine {
-	engine := gin.New()
+	engine := gin.Default()
 	engine.Use(Trace())
 	return engine
 }
