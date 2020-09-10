@@ -1,5 +1,5 @@
 package orm
 
-func Delete(o *Orm) (err error) {
+func delete(o *Orm, m Model) (bs BSql, err error) {
 	return
 }

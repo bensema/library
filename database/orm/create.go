@@ -1,5 +1,5 @@
 package orm
 
-func Create(o *Orm) (err error) {
+func create(o *Orm, m Model) (bs BSql, err error) {
 	return
 }

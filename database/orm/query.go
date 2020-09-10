@@ -5,21 +5,21 @@ import (
 	"strings"
 )
 
-func Query(o *Orm) (err error) {
+func query(o *Orm, m Model) (bs BSql, err error) {
 	if err = CheckTable(o); err != nil {
 		return
 	}
 
 	if len(o.selects) != 0 {
-		o.buildSql = fmt.Sprintf("SELECT %s ", strings.Join(o.selects, ","))
+		bs.Query = fmt.Sprintf("SELECT %s ", strings.Join(o.selects, ","))
 	} else {
-		o.buildSql = fmt.Sprintf("SELECT %s ", strings.Join(o.model.FieldsName(), ","))
+		bs.Query = fmt.Sprintf("SELECT %s ", strings.Join(m.Columns(), ","))
 	}
-	o.buildSql += fmt.Sprintf(" FROM %s ", o.table)
+	bs.Query += fmt.Sprintf(" FROM %s ", o.table)
 
 	if len(o.whereCond) != 0 {
-		o.buildSql += fmt.Sprintf(" WHERE %s", strings.Join(o.whereCond, " AND "))
+		bs.Query += fmt.Sprintf(" WHERE %s", strings.Join(o.whereCond, " AND "))
 	}
 
-	return err
+	return
 }

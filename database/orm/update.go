@@ -1,5 +1,5 @@
 package orm
 
-func Update(o *Orm) (err error) {
+func update(o *Orm, m Model) (bs BSql, err error) {
 	return
 }
