@@ -246,8 +246,8 @@ func (client *Client) Raw(c context.Context, req *xhttp.Request, v ...string) (b
 // Do sends an HTTP request and returns an HTTP json response.
 func (client *Client) Do(c context.Context, req *xhttp.Request, res interface{}, v ...string) (err error) {
 	var bs []byte
-	tr := global.Tracer("example/client")
-	ctx, span := tr.Start(c, "say hello", trace.WithAttributes(semconv.PeerServiceKey.String("ExampleService")))
+	tr := global.Tracer("http client")
+	ctx, span := tr.Start(c, "HTTP_CLIENT", trace.WithAttributes(semconv.PeerServiceKey.String("ExampleService")))
 	defer span.End()
 	if bs, err = client.Raw(ctx, req, v...); err != nil {
 		return
