@@ -38,6 +38,25 @@ func connect(c *Config, dataSourceName string) (*sql.DB, error) {
 	return d, nil
 }
 
+func (db *DB) Begin() (*sql.Tx, error) {
+	return db.write.Begin()
+}
+func (db *DB) BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error) {
+	return db.write.BeginTx(ctx, opts)
+}
+
+func (db *DB) Prepare(query string) (*sql.Stmt, error) {
+	return db.write.Prepare(query)
+}
+
+func (db *DB) PrepareContext(ctx context.Context, query string) (*sql.Stmt, error) {
+	return db.write.PrepareContext(ctx, query)
+}
+
+func (db *DB) Conn(ctx context.Context) (*sql.Conn, error) {
+	return db.write.Conn(ctx)
+}
+
 func (db *DB) readIndex() int {
 	if len(db.read) == 0 {
 		return 0
