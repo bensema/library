@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	Name string // redis name, for trace
+	Name      string // redis name, for trace
+	OpenTrace bool
 
 	MaxIdle         int
 	MaxActive       int

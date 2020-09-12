@@ -30,7 +30,9 @@ func NewPool(c *Config) *Pool {
 			return conn, nil
 		},
 	}
-	_p.AddHook(OpenTelemetryHook{})
+	if c.OpenTrace {
+		_p.AddHook(OpenTelemetryHook{})
+	}
 	return _p
 }
 
