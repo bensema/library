@@ -1,6 +1,9 @@
 package sql
 
-import _ "github.com/go-sql-driver/mysql"
+import (
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+)
 
 type Config struct {
 	DSN         string
@@ -10,9 +13,9 @@ type Config struct {
 	IdleTimeout int
 }
 
-func New(c *Config) (db *DB) {
-	db, err := Open(c)
-	if err != nil {
-	}
+func New(c *Config) (db *sql.DB) {
+	db, _ = sql.Open("mysql", c.DSN)
+	db.SetMaxOpenConns(c.Active)
+	db.SetMaxIdleConns(c.Idle)
 	return
 }
