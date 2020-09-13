@@ -5,6 +5,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+type DB sql.DB
+
 type Config struct {
 	DSN         string
 	ReadDSN     []string
