@@ -23,6 +23,9 @@ var (
 	UserIDCheckInvalidPhone = add(-114) // 请先绑定手机
 	UserIDCheckInvalidCard  = add(-115) // 请先完成实名认证
 
+	NameLegalErr     = add(-116) // 用户名不符合规范
+	PasswordLegalErr = add(-117) //密码不符合规范
+
 	NotModified           = add(-304) // 木有改动
 	TemporaryRedirect     = add(-307) // 撞车跳转
 	RequestErr            = add(-400) // 请求错误

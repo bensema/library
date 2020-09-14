@@ -1447,4 +1447,8 @@ var (
 	TVIPBatchIdNotFound      = New(93019) // 主站大会员批次id不存在
 	TVIPBuyRateExceeded      = New(93020) // 购买过于频繁
 	TVIPMVipRateExceeded     = New(93021) // 购买大会员升级套餐频繁
+
+	// user
+	PasswordEncodeErr = New(94101) //密码格式化异常
+
 )
