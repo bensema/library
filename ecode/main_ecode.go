@@ -1450,5 +1450,6 @@ var (
 
 	// user
 	PasswordEncodeErr = New(94101) //密码格式化异常
+	RoleNameErr       = New(94102) //角色名不能为空
 
 )
