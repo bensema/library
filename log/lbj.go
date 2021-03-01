@@ -6,15 +6,11 @@ import (
 )
 
 type LumberjackConfig struct {
-	Dir string
-
-	MaxSize int
-
-	MaxBackups int
-
-	MaxAge int
-
-	Compress bool
+	Dir        string // 日志文件路径
+	MaxSize    int    // 每个日志文件保存的最大尺寸 单位：M
+	MaxBackups int    // 日志文件最多保存多少个备份
+	MaxAge     int    // 文件最多保存多少天
+	Compress   bool   // 是否压缩
 }
 
 func NewLbj(c *LumberjackConfig, name string) *lumberjack.Logger {

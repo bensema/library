@@ -1,38 +1,20 @@
 package ecode
 
 import (
-	"fmt"
-	"strconv"
-	"sync/atomic"
-
 	"github.com/pkg/errors"
 )
 
-var (
-	_messages atomic.Value         // NOTE: stored map[string]map[int]string
-	_codes    = map[int]struct{}{} // register codes.
-)
-
-// Register register ecode message map.
-func Register(cm map[int]string) {
-	_messages.Store(cm)
-}
-
 // New new a ecode.Codes by int value.
 // NOTE: ecode must unique in global, the New will check repeat and then panic.
-func New(e int) Code {
+func New(e int, msg string) Code {
 	if e <= 0 {
 		panic("business ecode must greater than zero")
 	}
-	return add(e)
+	return add(e, msg)
 }
 
-func add(e int) Code {
-	if _, ok := _codes[e]; ok {
-		panic(fmt.Sprintf("ecode: %d already exist", e))
-	}
-	_codes[e] = struct{}{}
-	return Int(e)
+func add(e int, msg string) Code {
+	return Code{e, msg}
 }
 
 // Codes ecode error interface which has a code & message.
@@ -52,22 +34,20 @@ type Codes interface {
 }
 
 // A Code is an int error code spec.
-type Code int
+type Code struct {
+	code int
+	msg  string
+}
 
 func (e Code) Error() string {
-	return strconv.FormatInt(int64(e), 10)
+	return e.msg
 }
 
 // Code return error code
-func (e Code) Code() int { return int(e) }
+func (e Code) Code() int { return e.code }
 
 // Message return error message
 func (e Code) Message() string {
-	if cm, ok := _messages.Load().(map[int]string); ok {
-		if msg, ok := cm[e.Code()]; ok {
-			return msg
-		}
-	}
 	return e.Error()
 }
 
@@ -78,20 +58,13 @@ func (e Code) Details() []interface{} { return nil }
 // Deprecated: please use ecode.EqualError.
 func (e Code) Equal(err error) bool { return EqualError(e, err) }
 
-// Int parse code int to error.
-func Int(i int) Code { return Code(i) }
-
 // String parse code string to error.
 func String(e string) Code {
 	if e == "" {
 		return OK
 	}
-	// try error string
-	i, err := strconv.Atoi(e)
-	if err != nil {
-		return ServerErr
-	}
-	return Code(i)
+
+	return Code{public.code, e}
 }
 
 // Cause cause from error to ecode.
