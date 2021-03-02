@@ -1,4 +1,4 @@
-package redis
+package tmp
 
 import (
 	xtime "github.com/bensema/library/time"
@@ -8,15 +8,13 @@ type Config struct {
 	Name      string // redis name, for trace
 	OpenTrace bool
 
-	MaxIdle         int
-	MaxActive       int
-	IdleTimeout     xtime.Duration
-	MaxConnLifetime xtime.Duration
-
 	Addr         string
 	Db           int
+	Username     string
 	Password     string
 	DialTimeout  xtime.Duration
 	ReadTimeout  xtime.Duration
 	WriteTimeout xtime.Duration
+
+	PoolSize int
 }

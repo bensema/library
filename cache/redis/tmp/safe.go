@@ -1,6 +1,6 @@
 // +build appengine
 
-package redis
+package tmp
 
 func String(b []byte) string {
 	return string(b)

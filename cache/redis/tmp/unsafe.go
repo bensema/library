@@ -1,6 +1,6 @@
 // +build !appengine
 
-package redis
+package tmp
 
 import "unsafe"
 

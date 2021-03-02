@@ -1,4 +1,4 @@
-package redis
+package tmp
 
 import (
 	"encoding/hex"
