@@ -30,9 +30,9 @@ func main() {
 	log.Println("解密结果：", string(decrypted))
 
 	log.Println("------------------ CFB模式 --------------------")
-	encrypted = crypto.AesEncryptCFB(origData, key)
+	encrypted, _ = crypto.AesEncryptCFB(origData, key)
 	log.Println("密文(hex)：", hex.EncodeToString(encrypted))
 	log.Println("密文(base64)：", base64.StdEncoding.EncodeToString(encrypted))
-	decrypted = crypto.AesDecryptCFB(encrypted, key)
+	decrypted, _ = crypto.AesDecryptCFB(encrypted, key)
 	log.Println("解密结果：", string(decrypted))
 }

@@ -8,6 +8,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"errors"
 	"io"
 )
 
@@ -88,29 +89,30 @@ func generateKey(key []byte) (genKey []byte) {
 }
 
 // =================== CFB ======================
-func AesEncryptCFB(origData []byte, key []byte) (encrypted []byte) {
+func AesEncryptCFB(origData []byte, key []byte) (encrypted []byte, err error) {
+	encrypted = make([]byte, aes.BlockSize+len(origData))
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		panic(err)
+		return
 	}
-	encrypted = make([]byte, aes.BlockSize+len(origData))
 	iv := encrypted[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		panic(err)
+		return
 	}
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(encrypted[aes.BlockSize:], origData)
-	return encrypted
+	return encrypted, nil
 }
-func AesDecryptCFB(encrypted []byte, key []byte) (decrypted []byte) {
+func AesDecryptCFB(encrypted []byte, key []byte) (decrypted []byte, err error) {
 	block, _ := aes.NewCipher(key)
 	if len(encrypted) < aes.BlockSize {
-		panic("ciphertext too short")
+		err = errors.New("ciphertext too short")
+		return
 	}
 	iv := encrypted[:aes.BlockSize]
 	encrypted = encrypted[aes.BlockSize:]
 
 	stream := cipher.NewCFBDecrypter(block, iv)
 	stream.XORKeyStream(encrypted, encrypted)
-	return encrypted
+	return encrypted, nil
 }
