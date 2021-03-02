@@ -93,11 +93,11 @@ func AesEncryptCFB(origData []byte, key []byte) (encrypted []byte, err error) {
 	encrypted = make([]byte, aes.BlockSize+len(origData))
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return
+		return encrypted, err
 	}
 	iv := encrypted[:aes.BlockSize]
 	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return
+		return encrypted, err
 	}
 	stream := cipher.NewCFBEncrypter(block, iv)
 	stream.XORKeyStream(encrypted[aes.BlockSize:], origData)
