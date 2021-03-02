@@ -2,65 +2,34 @@ package redis
 
 import (
 	"context"
-	"fmt"
-	"go.opentelemetry.io/otel/api/global"
-	"go.opentelemetry.io/otel/api/trace"
+	"github.com/go-redis/redis/v8"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/label"
+	"go.opentelemetry.io/otel/trace"
 )
 
-type Hook interface {
-	BeforeProcess(ctx context.Context, cmd Cmder) (context.Context, error)
-	AfterProcess(ctx context.Context, cmd Cmder) error
-}
+var tracer = otel.Tracer("github.com/go-redis/redis")
 
-type hooks struct {
-	hooks []Hook
-}
+type TracingHook struct{}
 
-func (hs *hooks) AddHook(hook Hook) {
-	hs.hooks = append(hs.hooks, hook)
-}
+var _ redis.Hook = TracingHook{}
 
-func (hs *hooks) beforeProcess(ctx context.Context, cmd Cmder) (context.Context, error) {
-	for _, h := range hs.hooks {
-		var err error
-		ctx, err = h.BeforeProcess(ctx, cmd)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return ctx, nil
-}
-
-func (hs hooks) afterProcess(ctx context.Context, cmd Cmder) error {
-	var firstErr error
-	for _, h := range hs.hooks {
-		err := h.AfterProcess(ctx, cmd)
-		if err != nil && firstErr == nil {
-			firstErr = err
-		}
-	}
-	return firstErr
-}
-
-type OpenTelemetryHook struct{}
-
-func (OpenTelemetryHook) BeforeProcess(ctx context.Context, cmd Cmder) (context.Context, error) {
+func (TracingHook) BeforeProcess(ctx context.Context, cmd redis.Cmder) (context.Context, error) {
 	if !trace.SpanFromContext(ctx).IsRecording() {
 		return ctx, nil
 	}
 
-	tracer := global.Tracer("github.com/bensema/library/redis")
-	ctx, span := tracer.Start(ctx, cmd.Name())
+	ctx, span := tracer.Start(ctx, cmd.FullName())
 	span.SetAttributes(
 		label.String("db.system", "redis"),
-		label.String("redis.cmd", fmt.Sprintf("%s %s", cmd.Name(), cmd.Args())),
+		label.String("db.statement", CmdString(cmd)),
 	)
 
 	return ctx, nil
 }
 
-func (OpenTelemetryHook) AfterProcess(ctx context.Context, cmd Cmder) error {
+func (TracingHook) AfterProcess(ctx context.Context, cmd redis.Cmder) error {
 	span := trace.SpanFromContext(ctx)
 	if err := cmd.Err(); err != nil {
 		recordError(ctx, span, err)
@@ -69,9 +38,35 @@ func (OpenTelemetryHook) AfterProcess(ctx context.Context, cmd Cmder) error {
 	return nil
 }
 
+func (TracingHook) BeforeProcessPipeline(ctx context.Context, cmds []redis.Cmder) (context.Context, error) {
+	if !trace.SpanFromContext(ctx).IsRecording() {
+		return ctx, nil
+	}
+
+	summary, cmdsString := CmdsString(cmds)
+
+	ctx, span := tracer.Start(ctx, "pipeline "+summary)
+	span.SetAttributes(
+		label.String("db.system", "redis"),
+		label.Int("db.redis.num_cmd", len(cmds)),
+		label.String("db.statement", cmdsString),
+	)
+
+	return ctx, nil
+}
+
+func (TracingHook) AfterProcessPipeline(ctx context.Context, cmds []redis.Cmder) error {
+	span := trace.SpanFromContext(ctx)
+	if err := cmds[0].Err(); err != nil {
+		recordError(ctx, span, err)
+	}
+	span.End()
+	return nil
+}
+
 func recordError(ctx context.Context, span trace.Span, err error) {
-	span.RecordError(ctx, err)
-	if err != ErrNil {
-		span.RecordError(ctx, err)
+	if err != redis.Nil {
+		span.RecordError(err)
+		span.SetStatus(codes.Error, err.Error())
 	}
 }
