@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/bensema/library/crypto"
+	"time"
 )
 
 func main() {
@@ -22,10 +23,11 @@ func main() {
 	if b, _ := crypto.RsaVerySignWithSha256([]byte(data), signData, pubKey); b == true {
 		fmt.Println("签名信息验证成功，确定是正确私钥签名！！")
 	}
-
 	fmt.Println("-------------------------------进行加密解密操作-----------------------------------------")
-	ciphertext, _ := crypto.RsaEncrypt([]byte(data), pubKey)
+	ciphertext, _ := crypto.RsaEncrypt([]byte("ABCDEFGHIJKLMNOP"), pubKey)
 	fmt.Println("公钥加密后的数据：", hex.EncodeToString(ciphertext))
+	start := time.Now()
 	sourceData, _ := crypto.RsaDecrypt(ciphertext, prvKey)
 	fmt.Println("私钥解密后的数据：", string(sourceData))
+	fmt.Println(time.Now().Sub(start))
 }

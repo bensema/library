@@ -1,5 +1,5 @@
 /*
-RSA公钥私钥产生
+RSA公钥私钥产生 2048位
 加解密
 签名
 */
@@ -21,7 +21,7 @@ import (
 func GenRsaKey() (prvkey, pubkey []byte, err error) {
 	prvkey, pubkey = []byte{}, []byte{}
 	// 生成私钥文件
-	privateKey, err := rsa.GenerateKey(rand.Reader, 1024)
+	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		return
 	}

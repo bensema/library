@@ -1,5 +1,6 @@
 /*
 CBC/ECB/CFB
+ECB 256
 */
 package crypto
 
@@ -44,9 +45,9 @@ func pkcs5UnPadding(origData []byte) []byte {
 	return origData[:(length - unpadding)]
 }
 
-// =================== ECB ======================
+// =================== ECB ====================== 256 pkcs5Padding
 func AesEncryptECB(origData []byte, key []byte) (encrypted []byte) {
-	cipher, _ := aes.NewCipher(generateKey(key))
+	cpher, _ := aes.NewCipher(generateKey(key))
 	length := (len(origData) + aes.BlockSize) / aes.BlockSize
 	plain := make([]byte, length*aes.BlockSize)
 	copy(plain, origData)
@@ -56,18 +57,18 @@ func AesEncryptECB(origData []byte, key []byte) (encrypted []byte) {
 	}
 	encrypted = make([]byte, len(plain))
 	// 分组分块加密
-	for bs, be := 0, cipher.BlockSize(); bs <= len(origData); bs, be = bs+cipher.BlockSize(), be+cipher.BlockSize() {
-		cipher.Encrypt(encrypted[bs:be], plain[bs:be])
+	for bs, be := 0, cpher.BlockSize(); bs <= len(origData); bs, be = bs+cpher.BlockSize(), be+cpher.BlockSize() {
+		cpher.Encrypt(encrypted[bs:be], plain[bs:be])
 	}
 
 	return encrypted
 }
 func AesDecryptECB(encrypted []byte, key []byte) (decrypted []byte) {
-	cipher, _ := aes.NewCipher(generateKey(key))
+	cpher, _ := aes.NewCipher(generateKey(key))
 	decrypted = make([]byte, len(encrypted))
 	//
-	for bs, be := 0, cipher.BlockSize(); bs < len(encrypted); bs, be = bs+cipher.BlockSize(), be+cipher.BlockSize() {
-		cipher.Decrypt(decrypted[bs:be], encrypted[bs:be])
+	for bs, be := 0, cpher.BlockSize(); bs < len(encrypted); bs, be = bs+cpher.BlockSize(), be+cpher.BlockSize() {
+		cpher.Decrypt(decrypted[bs:be], encrypted[bs:be])
 	}
 
 	trim := 0
@@ -78,10 +79,10 @@ func AesDecryptECB(encrypted []byte, key []byte) (decrypted []byte) {
 	return decrypted[:trim]
 }
 func generateKey(key []byte) (genKey []byte) {
-	genKey = make([]byte, 16)
+	genKey = make([]byte, 32)
 	copy(genKey, key)
-	for i := 16; i < len(key); {
-		for j := 0; j < 16 && i < len(key); j, i = j+1, i+1 {
+	for i := 32; i < len(key); {
+		for j := 0; j < 32 && i < len(key); j, i = j+1, i+1 {
 			genKey[j] ^= key[i]
 		}
 	}
