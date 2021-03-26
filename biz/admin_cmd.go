@@ -9,6 +9,7 @@ type AdminRequest struct {
 	T          int64    `json:"t"`
 	R          string   `json:"r"`
 	Cmd        AdminCmd `json:"cmd"`
+	Method     string   `json:"method"`
 	Data       string   `json:"data"`
 }
 
