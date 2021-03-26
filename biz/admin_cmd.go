@@ -20,4 +20,5 @@ const (
 	AdvertiseDel
 	AdvertiseUpdate
 	AdvertiseQuery
+	AdvertisePages
 )
