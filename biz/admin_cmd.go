@@ -22,4 +22,9 @@ const (
 	AdvertiseUpdate
 	AdvertiseQuery
 	AdvertisePages
+	AnnouncementAdd
+	AnnouncementDel
+	AnnouncementUpdate
+	AnnouncementQuery
+	AnnouncementPages
 )
