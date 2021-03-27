@@ -17,73 +17,66 @@ type AdminCmd int
 
 const (
 	_ AdminCmd = iota
+
 	AdvertiseAdd
 	AdvertiseDel
 	AdvertiseUpdate
 	AdvertiseQuery
 	AdvertisePages
-	AnnouncementAdd
-	AnnouncementDel
-	AnnouncementUpdate
-	AnnouncementQuery
-	AnnouncementPages
-	GameAdd
-	GameDel
-	GameUpdate
-	GameQuery
-	GamePages
 
-	GameTypeAdd
-	GameTypeDel
-	GameTypeUpdate
-	GameTypeQuery
-	GameTypePages
-	GameTypeFind
-	GameTypeAll
+	AnnouncementsAdd
+	AnnouncementsDel
+	AnnouncementsUpdate
+	AnnouncementsQuery
+	AnnouncementsPages
 
-	GameGroupAdd
-	GameGroupDel
-	GameGroupUpdate
-	GameGroupQuery
-	GameGroupPages
-	GameGroupFind
-	GameGroupAll
+	AuthAdd
+	AuthDel
+	AuthUpdate
+	AuthQuery
+	AuthPages
 
 	CoinAdd
 	CoinDel
 	CoinUpdate
 	CoinQuery
 	CoinPages
-	CoinFind
-	CoinAll
 
 	CoinChainAdd
 	CoinChainDel
 	CoinChainUpdate
 	CoinChainQuery
 	CoinChainPages
-	CoinChainFind
-	CoinChainAll
+
+	GameAdd
+	GameDel
+	GameUpdate
+	GameQuery
+	GamePages
+
+	GameGroupAdd
+	GameGroupDel
+	GameGroupUpdate
+	GameGroupQuery
+	GameGroupPages
+
+	GameTypeAdd
+	GameTypeDel
+	GameTypeUpdate
+	GameTypeQuery
+	GameTypePages
 
 	GradeAdd
 	GradeDel
 	GradeUpdate
 	GradeQuery
 	GradePages
-	GradeFind
-	GradeAll
 
 	LogOperateAdd
 	LogOperateDel
 	LogOperateUpdate
 	LogOperateQuery
 	LogOperatePages
-
-	LogLoginAdd
-	LogLoginDel
-	LogLoginUpdate
-	LogLoginQuery
-	LogLoginPages
 
 	LogUserLoginAdd
 	LogUserLoginDel
@@ -115,11 +108,11 @@ const (
 	UserPowerQuery
 	UserPowerPages
 
-	UserSecurityQuestionAdd
-	UserSecurityQuestionDel
-	UserSecurityQuestionUpdate
-	UserSecurityQuestionQuery
-	UserSecurityQuestionPages
+	UserSecurityQuestionsAdd
+	UserSecurityQuestionsDel
+	UserSecurityQuestionsUpdate
+	UserSecurityQuestionsQuery
+	UserSecurityQuestionsPages
 
 	UserTokenAdd
 	UserTokenDel
@@ -133,9 +126,9 @@ const (
 	UserWalletQuery
 	UserWalletPages
 
-	UserAdd
-	UserDel
-	UserUpdate
-	UserQuery
-	UserPages
+	UsersAdd
+	UsersDel
+	UsersUpdate
+	UsersQuery
+	UsersPages
 )
