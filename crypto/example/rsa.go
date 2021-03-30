@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"encoding/hex"
 	"fmt"
 	"github.com/bensema/library/crypto"
@@ -24,10 +25,17 @@ func main() {
 		fmt.Println("签名信息验证成功，确定是正确私钥签名！！")
 	}
 	fmt.Println("-------------------------------进行加密解密操作-----------------------------------------")
-	ciphertext, _ := crypto.RsaEncrypt([]byte("ABCDEFGHIJKLMNOP"), pubKey)
+	ciphertext, _ := crypto.RsaEncrypt([]byte(`0000116156214087293FlVUfCV{"nonce":"tOGrhLMH","tmpAes":"fz0wKojksh9DSu6TSOhmmTal2QakfOJ1"}`), pubKey)
+	fmt.Println(len(ciphertext))
 	fmt.Println("公钥加密后的数据：", hex.EncodeToString(ciphertext))
 	start := time.Now()
 	sourceData, _ := crypto.RsaDecrypt(ciphertext, prvKey)
 	fmt.Println("私钥解密后的数据：", string(sourceData))
 	fmt.Println(time.Now().Sub(start))
+}
+
+func Int64ToBytes(i int64) []byte {
+	var buf = make([]byte, 8)
+	binary.BigEndian.PutUint64(buf, uint64(i))
+	return buf
 }

@@ -60,6 +60,12 @@ const (
 	GameGroupQuery
 	GameGroupPages
 
+	GameResultAdd
+	GameResultDel
+	GameResultUpdate
+	GameResultQuery
+	GameResultPages
+
 	GameTypeAdd
 	GameTypeDel
 	GameTypeUpdate
@@ -71,6 +77,12 @@ const (
 	GradeUpdate
 	GradeQuery
 	GradePages
+
+	IssueFactoryAdd
+	IssueFactoryDel
+	IssueFactoryUpdate
+	IssueFactoryQuery
+	IssueFactoryPages
 
 	LogOperateAdd
 	LogOperateDel
