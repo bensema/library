@@ -108,6 +108,12 @@ const (
 	SecurityQuestionsQuery
 	SecurityQuestionsPages
 
+	TmpSeedAdd
+	TmpSeedDel
+	TmpSeedUpdate
+	TmpSeedQuery
+	TmpSeedPages
+
 	UserInfoAdd
 	UserInfoDel
 	UserInfoUpdate
