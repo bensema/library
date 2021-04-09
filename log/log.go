@@ -7,6 +7,10 @@ import (
 
 var logger *zap.Logger
 
+func GetLogger() *zap.Logger {
+	return logger
+}
+
 func Debug(msg string, fields ...zap.Field) {
 	logger.Debug(msg, fields...)
 }
